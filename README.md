@@ -11,9 +11,9 @@
 * tkinter
 
 #### 目录结构及说明
-├── bin <br>
+├── bin		> 可执行文件 <br>
 │   └── register_sprite_v1.1_win64_exe.7z		<br>
-├── doc		<br>
+├── doc		> 相关文档 <br>
 │   ├── 更详细的软件结构说明.txt		<br>
 │   └── 更新日志.txt		<br>
 ├── lib		<br>
