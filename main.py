@@ -41,7 +41,7 @@ class MyGui(Frame):
         # self.bg_color = "#f0f0f0"
         self.bg_color = StringVar()
         self.bg_color = "#f0f0f0"
-        self.btn_color = '#faf9f8'
+        self.btn_color = '#f3f1ef'
         self.text_color = '#000000'
 
         self.init_frame()
