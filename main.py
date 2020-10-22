@@ -39,7 +39,6 @@ class MyGui(Frame):
         self.frame_btn_row2 = Frame(self.Window)
 
         # self.bg_color = "#f0f0f0"
-        self.bg_color = StringVar()
         self.bg_color = "#f0f0f0"
         self.btn_color = '#f3f1ef'
         self.text_color = '#000000'
@@ -523,8 +522,10 @@ class MyGui(Frame):
         for btn in self.btn_list:
             if btn['text'] == '0':
                 btn.config(relief='raised')  # 设置按钮样式为升起
+                btn.config(bg='#f0f0f0')
             else:
                 btn.config(relief='sunken')  # 设置按钮样式为按下
+                btn.config(bg='gray')
 
     '''
         复位功能函数
