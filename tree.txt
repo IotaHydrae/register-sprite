@@ -1,0 +1,22 @@
+.
+├── bin
+│   └── register_sprite_v1.1_win64_exe.7z
+├── doc
+│   ├── 更详细的软件结构说明.txt
+│   └── 更新日志.txt
+├── lib
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── _debug.cpython-39.pyc
+│   │   └── _MyColor.cpython-39.pyc
+│   ├── _debug.py
+│   └── _MyColor.py
+├── LICENSE
+├── main.py
+├── README.en.md
+├── README.md
+├── src
+└── tree.txt
+
+5 directories, 14 files

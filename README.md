@@ -1,17 +1,41 @@
 # **寄存器小精灵**
 
 #### 介绍
-我做了一个查看寄存器位小工具，它是基于**python tkinter**编写的，具有良好的界面和一些简单的功能，它可以轻松实现**10位**、**16位**、**8位**和**2位**之间的转换，方便用于学习各种嵌入式寄存器的位配置，嵌入式工程师的**必备神器**。
+寄存器小精灵（Register Sprite）基于**python tkinter**编写，具有良好的界面和一些简单的交互功能，它可以轻松实现**10位**、**16位**、**8位**和**2位**之间的转换，方便用于学习各种嵌入式寄存器的位配置，嵌入式工程师的**必备神器**。
 我提供了使用**pyinstaller**构建好的可执行文件，当然你也可以**修改后**构建自己的EXE文件
 
+项目还在完善中，欢迎各位的加入
 #### 软件架构
-基于python tkinter
+* Python 3.9
+* tkinter
 
-#### 目录说明
+#### 目录结构及说明
+├── bin
+│   └── register_sprite_v1.1_win64_exe.7z
+├── doc
+│   ├── 更详细的软件结构说明.txt
+│   └── 更新日志.txt
+├── lib
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── _debug.cpython-39.pyc
+│   │   └── _MyColor.cpython-39.pyc
+│   ├── _debug.py
+│   └── _MyColor.py
+├── LICENSE
+├── main.py
+├── README.en.md
+├── README.md
+└── src
 
+5 directories, 13 files
 #### 安装教程
-
+* 设备中已有Python环境
+    > 通过本地python解释器直接运行main.py文件
+* 设备中未安装Python环境
+    > 作者提供了位于bin目录下构建好的exe文件，暂时只支持x86平台
 #### 使用说明
-
+* 软件使用了可视化的操作界面，如果需要更详细的了解使用方法，请查看doc目录下相关文档
 #### 参与贡献
 @hz2 
