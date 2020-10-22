@@ -5,12 +5,13 @@
 我提供了使用**pyinstaller**构建好的可执行文件，当然你也可以**修改后**构建自己的EXE文件
 
 项目还在完善中，欢迎各位的加入
+
 #### 软件架构
 * Python 3.9
 * tkinter
 
 #### 目录结构及说明
-├── bin
+├── bin 
 │   └── register_sprite_v1.1_win64_exe.7z
 ├── doc
 │   ├── 更详细的软件结构说明.txt
@@ -30,12 +31,23 @@
 └── src
 
 5 directories, 13 files
+#### 使用到的库
+> functools
+> time
+> tkinter
+
 #### 安装教程
+
 * 设备中已有Python环境
+    
     > 通过本地python解释器直接运行main.py文件
+    >
+    > `python main.py `
+    
 * 设备中未安装Python环境
+    
     > 作者提供了位于bin目录下构建好的exe文件，暂时只支持x86平台
 #### 使用说明
 * 软件使用了可视化的操作界面，如果需要更详细的了解使用方法，请查看doc目录下相关文档
 #### 参与贡献
-@hz2 
+@[hz2](https://gitee.com/JensenHua/)
