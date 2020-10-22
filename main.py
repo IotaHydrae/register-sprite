@@ -1,24 +1,57 @@
+# import **************************************************
+import time
+from functools import wraps
 from tkinter import *
+import tkinter as tk
 
-QWORD = 64
-DWORD = 32
-WORD = 16
+from lib import _MyColor
+from lib import _debug
+
+'''
+    @file: main.py
+    @author: hz
+    @version: v1.1
+    @date: 2020-10-21
+    @brief: register_sprite update
+'''
 
 
-class MyGui():
-    def __init__(self, Window):
-        self.Window = Window  # 主窗体
+class MyGui(Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.Window = master  # 主窗体
+        self.pack()
+        # self.window_controller = window_controller
+        self.lbl_list = []  # 按钮上label列表
         self.btn_list = []  # 位按钮列表
+        self.placeholder_list = []  # 占位控件列表
         self.btn_num = 31  # 按钮顶部label字符
-        self.cpu_word_length = DWORD  # 默认CPU字长
+        # self.cpu_word_length = DWORD  # 默认CPU字长
         self.frame = Frame(self.Window)
+
+        self.frame_show = Frame(self.Window)
+        self.frame_choice = Frame(self.frame_show)
+        self.frame_label = Frame(self.frame_show)
+        self.frame_entry = Frame(self.frame_show)
 
         # 31-16 和 15-0 位按钮
         self.frame_btn_row1 = Frame(self.Window)
         self.frame_btn_row2 = Frame(self.Window)
 
+        # self.bg_color = "#f0f0f0"
+        self.bg_color = StringVar()
+        self.bg_color = "#f0f0f0"
+        self.btn_color = '#faf9f8'
+        self.text_color = '#000000'
+
+        self.init_frame()
+        self.init_menu()
+        self.init_view()
+
+    @_debug.printk()
     def init_frame(self):
         self.Window.title('寄存器小精灵')
+
         # 长宽 和 xy偏移
         width = 650
         height = 350
@@ -26,15 +59,59 @@ class MyGui():
         offset_y = 200
         self.Window.geometry('{0}x{1}+{2}+{3}'.format(width, height, offset_x, offset_y))
 
+    @_debug.printk()
+    def init_menu(self):
+        menu_font_type = "宋体"
+        menu_font_size = 11
+        menu_font_tuple = (menu_font_type, menu_font_size)
+
+        menuBar = Menu(self.Window, tearoff=0)
+        self.Window.config(menu=menuBar)
+
+        # cpu字长选择菜单
+        cwlBar = Menu(menuBar, tearoff=0)
+        cwlBar.add_command(label="64位", command=lambda cwl='64': self.CWL_change(cwl))
+        cwlBar.add_command(label="32位", command=lambda cwl='32': self.CWL_change(cwl))
+        cwlBar.add_command(label="16位", command=lambda cwl='16': self.CWL_change(cwl))
+        cwlBar.add_command(label="8位", command=lambda cwl='8': self.CWL_change(cwl))
+
+        # # 背景颜色选择菜单
+        # bgColorBar = Menu(menuBar, tearoff=0)
+        # bgColorBar.add_command(label='黑色', command=lambda bg_color='青色': self.ChangeBackgroundColor(bg_color))
+
+        # 设置菜单
+        settingBar = Menu(menuBar, tearoff=0)
+        settingBar.add_cascade(label="CPU字长", menu=cwlBar, font=menu_font_tuple)
+        settingBar.add_command(label="背景色",
+                               command=lambda bg_color='青色': self.ChangeBackgroundColor(bg_color),
+                               font=menu_font_tuple)
+
+        # 文件菜单
+        fileBar = Menu(menuBar, tearoff=0)
+        fileBar.add_cascade(label="设置", menu=settingBar, font=menu_font_tuple)
+        fileBar.add_separator()
+        fileBar.add_command(label="退出", command=self.quit, font=menu_font_tuple)
+        menuBar.add_cascade(label='文件', menu=fileBar, font=menu_font_tuple)
+
+    @_debug.printk()
     def create_obj_group(self, frame, row, column):
         # 4次循环
         for i in range(4):
-            # print(i)
-            # j = abs(i - 31)  这里原用来设置各按键上部label字符，后来改用了全局变量的方式
-            Label(frame, text=self.btn_num, font=("宋体", 9, "bold")).grid(row=row, column=column + i,
-                                                                         sticky=W + E + N + S, padx=7, pady=7)
+            lbl = tk.Label(frame,
+                           background=self.bg_color,
+                           text=self.btn_num,
+                           font=("宋体", 9, "bold"))
+            lbl.grid(row=row,
+                     column=column + i,
+                     sticky=W + E + N + S, padx=7, pady=7)
+
             # 创建按钮
-            obj = Button(frame, text='0', width='3', height='2', font=("宋体", 9, "bold"))
+            obj = Button(frame,
+                         text='0',
+                         width='3',
+                         height='2',
+                         background=self.btn_color,
+                         font=("宋体", 9, "bold"))
 
             '''
                 这是for循环生成按钮，同时单独操作每个按钮的解决方案
@@ -49,25 +126,36 @@ class MyGui():
             self.btn_num -= 1
             # 将按钮添加到 总按钮列表用  数据更新函数会遍历列表取得二进制数据
             self.btn_list.append(obj)
+            self.lbl_list.append(lbl)
 
     '''
         控件生成函数
     '''
 
+    @_debug.printk()
     def init_view(self):
         '''
             这两个for循环并不涉及数据的更改和显示
             仅仅作为占位控件来使按钮易于布局
         '''
         for i in range(19):
-            j = abs(i - 31)
-            Label(self.frame_btn_row1, text='  ', font=("宋体", 8, "bold")).grid(row=5, column=i,
-                                                                               sticky=W + E + N + S, padx=7, pady=7)
+            lbl = Label(self.frame_btn_row1,
+                        background=self.bg_color,
+                        text='  ',
+                        font=("宋体", 8, "bold"))
+            self.placeholder_list.append(lbl)
+            lbl.grid(row=5,
+                     column=i,
+                     sticky=W + E + N + S, padx=7, pady=7)
         for i in range(19):
-            j = abs(i - 31)
-            Label(self.frame_btn_row2, text='  ', font=("宋体", 8, "bold")).grid(row=5, column=i,
-                                                                               sticky=W + E + N + S, padx=7, pady=7)
-
+            lbl = Label(self.frame_btn_row2,
+                        background=self.bg_color,
+                        text='  ',
+                        font=("宋体", 8, "bold"))
+            self.placeholder_list.append(lbl)
+            lbl.grid(row=5,
+                     column=i,
+                     sticky=W + E + N + S, padx=7, pady=7)
         '''第一部分用来生成31-16位的label和button'''
         pad = 0
         call_mode = 0  # 用来设置是否为第一组控件
@@ -109,29 +197,51 @@ class MyGui():
         frame_entry用来存放进制的回显区
         frame_choice用来存放复选功能
         '''
-        self.frame_show = Frame(self.Window)
+
         self.frame_show.pack()
 
         # 进制label区
-        self.frame_label = Frame(self.frame_show)
-        self.hex = Label(self.frame_label, text="16进制", font=("宋体", 12, "bold"))
+        self.hex = Label(self.frame_label,
+                         background=self.bg_color,
+                         text="16进制",
+                         font=("宋体", 12, "bold"))
         self.hex.pack(side=TOP)
-        self.decimal = Label(self.frame_label, text="10进制", font=("宋体", 12, "bold"))
+        self.decimal = Label(self.frame_label,
+                             background=self.bg_color,
+                             text="10进制",
+                             font=("宋体", 12, "bold"))
         self.decimal.pack(side=TOP)
-        self.octal = Label(self.frame_label, text="8进制", font=("宋体", 12, "bold"))
+        self.octal = Label(self.frame_label,
+                           background=self.bg_color,
+                           text="8进制",
+                           font=("宋体", 12, "bold"))
         self.octal.pack(side=TOP)
-        self.binary = Label(self.frame_label, text="2进制", font=("宋体", 12, "bold"))
+        self.binary = Label(self.frame_label,
+                            background=self.bg_color,
+                            text="2进制",
+                            font=("宋体", 12, "bold"))
         self.binary.pack(side=TOP)
 
         # 进制换算区
-        self.frame_entry = Frame(self.frame_show)
-        self.hex_output = Entry(self.frame_entry, width=40, font=("宋体", 12, "bold"))
+        self.hex_output = Entry(self.frame_entry,
+                                background=self.bg_color,
+                                width=40,
+                                font=("宋体", 12, "bold"))
         self.hex_output.pack(side=TOP)
-        self.decimal_output = Entry(self.frame_entry, width=40, font=("宋体", 12, "bold"))
+        self.decimal_output = Entry(self.frame_entry,
+                                    background=self.bg_color,
+                                    width=40,
+                                    font=("宋体", 12, "bold"))
         self.decimal_output.pack(side=TOP)
-        self.octal_output = Entry(self.frame_entry, width=40, font=("宋体", 12, "bold"))
+        self.octal_output = Entry(self.frame_entry,
+                                  background=self.bg_color,
+                                  width=40,
+                                  font=("宋体", 12, "bold"))
         self.octal_output.pack(side=TOP)
-        self.binary_output = Entry(self.frame_entry, width=40, font=("宋体", 12, "bold"))
+        self.binary_output = Entry(self.frame_entry,
+                                   background=self.bg_color,
+                                   width=40,
+                                   font=("宋体", 12, "bold"))
         self.binary_output.pack(side=TOP)
 
         '''
@@ -139,15 +249,30 @@ class MyGui():
             十六进制以位位移形式显示
         '''
         # 置位
-        self.label_hex_shift_set = Label(self.frame_label, text="置位", font=("宋体", 10))
+        self.label_hex_shift_set = Label(self.frame_label,
+                                         background=self.bg_color,
+                                         text="置位",
+                                         font=("宋体", 10))
         self.label_hex_shift_set.pack(side=TOP, pady=5)
-        self.entry_hex_shift_set = Entry(self.frame_entry, width=45, font=("宋体", 10, "bold"))
+
+        self.entry_hex_shift_set = Entry(self.frame_entry,
+                                         background=self.bg_color,
+                                         width=45,
+                                         font=("宋体", 10, "bold"))
         self.entry_hex_shift_set.pack(side=TOP, pady=5)
 
         # 清零
-        self.label_hex_shift_clear = Label(self.frame_label, text="清零", font=("宋体", 10))
+        self.label_hex_shift_clear = Label(self.frame_label,
+                                           background=self.bg_color,
+                                           text="清零",
+                                           font=("宋体", 10))
+
         self.label_hex_shift_clear.pack(side=TOP)
-        self.entry_hex_shift_clear = Entry(self.frame_entry, width=45, font=("宋体", 10, "bold"))
+
+        self.entry_hex_shift_clear = Entry(self.frame_entry,
+                                           background=self.bg_color,
+                                           width=45,
+                                           font=("宋体", 10, "bold"))
         self.entry_hex_shift_clear.pack(side=TOP)
 
         self.frame_label.pack(side=LEFT)
@@ -156,29 +281,40 @@ class MyGui():
         self.init_value()
 
         # 这里创建复选框功能区
-        self.frame_choice = Frame(self.frame_show)
         self.CheckVar = IntVar()
-        self.ck_btn = Checkbutton(self.frame_choice, text="窗口保持在全屏幕的顶部", variable=self.CheckVar, \
-                                  onvalue=1, offvalue=0, command=self.isChecked)
+        self.ck_btn = Checkbutton(self.frame_choice,
+                                  text="窗口保持在全屏幕的顶部",
+                                  background=self.bg_color,
+                                  variable=self.CheckVar,
+                                  onvalue=1, offvalue=0,
+                                  command=self.isChecked)
         self.ck_btn.pack(side=TOP)
 
         # 左移功能按钮
-        self.lsh_btn = Button(self.frame_choice, text="左移")
+        self.lsh_btn = Button(self.frame_choice,
+                              background=self.btn_color,
+                              text="左移")
         self.lsh_btn.config(command=self.left_shift)
         self.lsh_btn.pack(side=LEFT)
 
         # 右移功能按键
-        self.rsh_btn = Button(self.frame_choice, text="右移")
+        self.rsh_btn = Button(self.frame_choice,
+                              background=self.btn_color,
+                              text="右移")
         self.rsh_btn.config(command=self.right_shift)
         self.rsh_btn.pack(side=LEFT)
 
         # 求非功能按键
-        self.not_btn = Button(self.frame_choice, text="求非")
+        self.not_btn = Button(self.frame_choice,
+                              background=self.btn_color,
+                              text="求非")
         self.not_btn.config(command=self.calc_not)
         self.not_btn.pack(side=LEFT)
 
         # 复位功能按键
-        self.rst_btn = Button(self.frame_choice, text="复位")
+        self.rst_btn = Button(self.frame_choice,
+                              background=self.btn_color,
+                              text="复位")
         self.rst_btn.config(command=self.bit_reset)
         self.rst_btn.pack(side=LEFT)
 
@@ -189,6 +325,7 @@ class MyGui():
         数据初始化函数
     '''
 
+    @_debug.printk()
     def init_value(self):
         # 这部分代码用来向回显区插入初始数据，并无实际作用
         self.binary_output['state'] = 'normal'
@@ -207,6 +344,7 @@ class MyGui():
         数据清除函数
     '''
 
+    @_debug.printk()
     def clear_value(self):
         '''清空各进制回显区，每次修改前都要先清空'''
         self.binary_output['state'] = 'normal'
@@ -224,6 +362,7 @@ class MyGui():
         该函数用来将按钮数据处理后显示到进制换算区
     '''
 
+    @_debug.printk()
     def show_data(self):
         self.clear_value()
         self.binary_output['state'] = 'normal'  # 将二进制回显区设置为可写
@@ -322,6 +461,7 @@ class MyGui():
         按钮每次点击都会调用该函数，执行完样式更改后调用数据更新函数
     '''
 
+    @_debug.printk()
     def set_bit(self, obj):
 
         # 根据按钮值更改按钮显示信息
@@ -341,6 +481,7 @@ class MyGui():
             bin_show  :  用于显示给用户的二进制数据
     '''
 
+    @_debug.printk()
     def get_bin_value(self, mode):
         # 遍历按钮数组，将按钮值拼接为字符串，得到一个二进制数据
         # _bin为初始数据
@@ -377,6 +518,7 @@ class MyGui():
         按钮样式更新函数
     '''
 
+    @_debug.printk()
     def update_btn_style(self):
         for btn in self.btn_list:
             if btn['text'] == '0':
@@ -388,6 +530,7 @@ class MyGui():
         复位功能函数
     '''
 
+    @_debug.printk()
     def bit_reset(self):
         # 遍历按钮列表，将按钮恢复至初始状态，即数值0样式为升起
         for btn in self.btn_list:
@@ -408,6 +551,7 @@ class MyGui():
         求非功能函数
     '''
 
+    @_debug.printk()
     def calc_not(self):
         # 遍历按钮列表,反转按钮值和样式
         for btn in self.btn_list:
@@ -424,6 +568,7 @@ class MyGui():
         左右移位这个功能
     '''
 
+    @_debug.printk()
     def left_shift(self):
         # 得到二进制数据
         _bin = self.get_bin_value(mode='normal')
@@ -441,8 +586,9 @@ class MyGui():
         self.update_btn_style()
         self.show_data()
 
+    @_debug.printk()
     def right_shift(self):
-        print('right_shift called！')
+        # print(' called！')
         # 得到二进制数据
         _bin = self.get_bin_value(mode='normal')
         # 右移数据处理
@@ -460,10 +606,11 @@ class MyGui():
         self.update_btn_style()
         self.show_data()
 
-
     '''
         窗口置顶函数
     '''
+
+    @_debug.printk()
     def isChecked(self):
         val = self.CheckVar.get()
         if val == 1:
@@ -475,14 +622,67 @@ class MyGui():
             self.Window.attributes("-toolwindow", 0)
             self.Window.wm_attributes("-topmost", 0)
 
+    def askColorInfo(self):
+        color_input = _MyColor.ColorChoiceFrame(master=self.Window)
+        self.Window.wait_window(color_input)
+        # print(color_input.color_data_list)
+        return color_input.current_btn_value
 
+    def TraverseTargetList(self, list_):
+        for obj in list_:
+            obj.config(bg=self.bg_color)
+
+    def ChangeBackgroundColor(self, color):
+        '''
+            @author: hz
+            @version:
+            @date:
+            @brief:
+
+        :param color: 用户将要切换的背景颜色
+        :return: 程序执行状态
+        '''
+        err = 1
+        try:
+            target_color = self.askColorInfo()
+            # 窗体背景颜色更换
+            self.bg_color = _MyColor.GetColor(target_color)
+            self.Window.configure(bg=self.bg_color)
+            self.frame_btn_row1.configure(bg=self.bg_color)
+            self.frame_btn_row2.configure(bg=self.bg_color)
+            self.frame_label.configure(bg=self.bg_color)
+            self.frame_show.configure(bg=self.bg_color)
+            self.frame_entry.configure(bg=self.bg_color)
+            self.frame_choice.configure(bg=self.bg_color)
+
+            # label及占位符背景颜色更换
+            self.TraverseTargetList(self.lbl_list)
+            self.TraverseTargetList(self.placeholder_list)
+
+            # 进制label背景颜色更换
+            self.hex.config(bg=self.bg_color)
+            self.octal.config(bg=self.bg_color)
+            self.decimal.config(bg=self.bg_color)
+            self.binary.config(bg=self.bg_color)
+
+            # 置位及清零label背景颜色更换
+            self.label_hex_shift_set.config(bg=self.bg_color)
+            self.label_hex_shift_clear.config(bg=self.bg_color)
+
+            # checkbox背景颜色更换
+            self.ck_btn.config(bg=self.bg_color)
+            return err
+        except:
+            return -err
+
+
+@_debug.printk()
 def guiStart():
-    window = Tk()
-    window.resizable(0, 0)
-    frame = MyGui(window)
-    frame.init_frame()
-    frame.init_view()
-    window.mainloop()
+
+    root = Tk()
+    root.resizable(0, 0)
+    app = MyGui(master=root)
+    app.mainloop()
 
 
 if __name__ == '__main__':
