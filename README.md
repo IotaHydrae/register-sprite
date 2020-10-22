@@ -11,24 +11,24 @@
 * tkinter
 
 #### 目录结构及说明
-├── bin 
-│   └── register_sprite_v1.1_win64_exe.7z
-├── doc
-│   ├── 更详细的软件结构说明.txt
-│   └── 更新日志.txt
-├── lib
-│   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-39.pyc
-│   │   ├── _debug.cpython-39.pyc
-│   │   └── _MyColor.cpython-39.pyc
-│   ├── _debug.py
-│   └── _MyColor.py
-├── LICENSE
-├── main.py
-├── README.en.md
-├── README.md
-└── src
+├── bin <br>
+│   └── register_sprite_v1.1_win64_exe.7z		<br>
+├── doc		<br>
+│   ├── 更详细的软件结构说明.txt		<br>
+│   └── 更新日志.txt		<br>
+├── lib		<br>
+│   ├── __init__.py		<br>
+│   ├── __pycache__		<br>
+│   │   ├── __init__.cpython-39.pyc		<br>
+│   │   ├── _debug.cpython-39.pyc		<br>
+│   │   └── _MyColor.cpython-39.pyc		<br>
+│   ├── _debug.py		<br>
+│   └── _MyColor.py		<br>
+├── LICENSE		<br>
+├── main.py		<br>
+├── README.en.md		<br>
+├── README.md		<br>
+└── src		<br>
 
 5 directories, 13 files
 #### 使用到的库
