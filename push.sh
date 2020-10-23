@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # push更新到仓库
 MESSAGE=`date`
