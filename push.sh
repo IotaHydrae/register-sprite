@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # push更新到仓库
-MESSAGE=`date`+"update"
+MESSAGE=`date`"update"
 echo $MESSAGE
 
 echo "Adding files to git"
 git add .
 
 echo "Removing useless files and dirs"
-git rm push.sh
 git rm -r .idea/
+git rm ./push.sh
 echo "Adding message"
 git commit -m "$MESSAGE"
 
