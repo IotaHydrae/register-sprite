@@ -7,7 +7,7 @@ echo $MESSAGE
 echo "Adding files to git"
 git add .
 
-git remove .idea/
+git rm .idea/
 echo "Adding message"
 git commit -m "$MESSAGE"
 
