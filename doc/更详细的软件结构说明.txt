@@ -1,1 +1,58 @@
+				软件架构及详细说明
+	
+			HZ <h1657802074@gmail.com>
+
+开篇介绍：***
+
+软件结构：
+
+lib--[ _debug.py		自定义的调试库
+	 [ _MyColor.py		样式库
+main.py
+		
+		{ init_frame 初始化软件各frame
+main.py { init_menu  初始化菜单
+		{ init_view  初始化控件
+
+		   { 主窗口标题
+init_frame { 窗口的长宽
+		   { 窗口相对屏幕左上角的XY轴偏移
+
+							{ CPU字长设置（暂未实现）
+					 { 设置 { 背景色
+init_menu { 文件菜单 { 退出
+		
+
+												   { for循环调用create_obj_group
+init_view { 两个for循环生成占位符，便于下一步布局  { 生成按钮及按钮顶部label
+		  { 生成下半部数据显示区 { 各进制的Label
+								 { 各进制的Entry回显区
+								 { 置位及清零
+
+	数据处理函数：
+		init_value 		用来向回显区插入初始数据
+		clear_value		用来清除回显区数据
+		* show_data		获取按钮数据并进行处理，显示到下半部
+		set_bit			根据按钮是否被按下更改按钮的text值 \
+						按钮在生成时已经绑定了该函数
+						
+		get_bin_value 	遍历按钮列表，返回二进制数据
+		bit_reset		复位两部分数据
+		calc_not		遍历按钮列表,反转按钮值和样式
+		left_shift		数据左移
+		right_shift 	数据右移
+		isChecked		窗口是否置顶
+
+	样式处理函数
+		update_btn_style根据按钮text值更新按钮样式
+		askColorInfo	调用MyColor样式库中颜色选择器类，获取类中设置的color值
+	  TraverseTargetList遍历参数列表，设置对象背景色
+	  ChangeBackgroundColor  实现窗体背景色更换
+		guiStart		生成主窗体，并锁定窗口长宽
+
+_debug.py
 待补充
+
+
+_MyColor.py		
+待补充	

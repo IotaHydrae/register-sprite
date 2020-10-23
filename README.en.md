@@ -1,23 +1,66 @@
-# 寄存器小精灵
+# Register Sprite
 
 #### Description
-我做了一个查看寄存器位小工具，它是基于python tkinter编写的，具有良好的界面和一些简单的功能，它可以轻松实现10位、16位、8位和2位之间的转换，方便用于学习各种嵌入式寄存器的位配置，嵌入式工程师的必备神器。
-我提供了使用pyinstaller构建好的可执行文件，当然你也可以修改后构建自己的EXE文件
+Register Sprite Based on**python tkinter**，It has a good interface and some simple interactive functions，It can be easily realize the conversion between**decimal**、**hexadecimal**、**octal**和**Binary**，It is convenient for learning bit configuration of various embedded registers，essential **artifact** for embedded Engineer。
+I provided the executable file built with **pyinstaller**，Of course, you can also **modify** to build your own EXE file
 
 #### Software Architecture
-Software architecture description
+* Python 3.9 tkinter
 
-#### Installation
+* > Please refer to the document directory for details
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### Libraries used
+> functools
+> time
+> tkinter
 
-#### Instructions
+#### Installation tutorial
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+* Python environment already exists in the device
+  
+    > Run directly through the local Python interpreter main.py file
+    >
+    > `python main.py `
+    
+* The python environment is not installed in the device
+  
+    > The author provides an EXE file in bin directory, which only supports X86 platform
+
+#### instructions
+* > The software uses a visual operation interface. If you need to know how to use it in more detail, please check the relevant documents under the doc directory
+
+#### Directory structure and description
+
+├── bin		<br>
+│   └── register_sprite_v1.1_win64_exe.7z		<br>
+├── doc		<br>
+│   ├── 更详细的软件结构说明.txt		<br>
+│   └── 更新日志.txt		<br>
+├── lib		<br>
+│   ├── __init__.py		<br>
+│   ├── __pycache__		<br>
+│   │   ├── __init__.cpython-39.pyc		<br>
+│   │   ├── _debug.cpython-39.pyc		<br>
+│   │   └── _MyColor.cpython-39.pyc		<br>
+│   ├── _debug.py		<br>
+│   └── _MyColor.py		<br>
+├── LICENSE		<br>
+├── main.py		<br>
+├── README.en.md		<br>
+├── README.md		<br>
+└── src		<br>
+
+*5 directories, 13 files*
+
+
+#### Join us
+
+* > Send your message to my email（ h1657802074@gmail.com ）I'll check every email myself
+  >
+  > Your every contribution is a great help to this project
+
+#### Participation contribution
+@[hz2](https://gitee.com/JensenHua/)
 
 #### Contribution
 
@@ -25,13 +68,3 @@ Software architecture description
 2.  Create Feat_xxx branch
 3.  Commit your code
 4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
