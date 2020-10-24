@@ -1,7 +1,7 @@
 # Register Sprite
 
 #### Description
-Register Sprite Based on**python tkinter**，It has a good interface and some simple interactive functions，It can be easily realize the conversion between**decimal**、**hexadecimal**、**octal**和**Binary**，It is convenient for learning bit configuration of various embedded registers，essential **artifact** for embedded Engineer。
+Register Sprite Based on**python tkinter**，It has a good interface and some simple interactive functions，It can be easily realize the conversion between**decimal**、**hexadecimal**、**octal**and**Binary**，It is convenient for learning bit configuration of various embedded registers，essential **artifact** for embedded Engineer。
 I provided the executable file built with **pyinstaller**，Of course, you can also **modify** to build your own EXE file
 
 #### Software Architecture

@@ -320,6 +320,11 @@ class MyGui(Frame):
         # 复选框区域打包
         self.frame_choice.pack(side=TOP)
 
+    @_debug.printk()
+    def CWL_change(self, cwl):
+        print("CPU WORD LENGTH: ", cwl)
+        pass
+
     '''
         数据初始化函数
     '''

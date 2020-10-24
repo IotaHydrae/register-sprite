@@ -9,7 +9,6 @@ git add .
 
 echo "Removing useless files and dirs"
 git rm -r .idea/
-git rm ./push.sh
 echo "Adding message"
 git commit -m "$MESSAGE"
 
