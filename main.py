@@ -16,15 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# import **************************************************
-import time
-from functools import wraps
-from tkinter import *
-import tkinter as tk
-
-from lib import _MyColor
-from lib import _debug
-
 '''
     @file: main.py
     @author: hz
@@ -32,6 +23,13 @@ from lib import _debug
     @date: 2020-10-21
     @brief: register_sprite update
 '''
+
+# import **************************************************
+from tkinter import *
+import tkinter as tk
+
+from lib import _MyColor
+from lib import _debug
 
 
 class MyGui(Frame):
