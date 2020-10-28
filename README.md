@@ -6,6 +6,7 @@
 软件架构
 ----
 * Python 3.9 tkinter
+  
   > 详情见文档目录
 
 目录结构及说明
@@ -33,9 +34,12 @@
 
 使用到的库
 -----
-> functools
-> time
-> tkinter
+```python
+from tkinter import *
+import tkinter as tk
+import time
+from functools import wraps
+```
 
 安装教程
 ----
@@ -49,7 +53,7 @@
 * 设备中未安装Python环境
   
     > 作者提供了位于bin目录下构建好的exe文件，暂时只支持x86平台            
-              
+    
 使用说明
 ----                
 * > 软件使用了可视化的操作界面，如果需要更详细的了解使用方法，请查看doc目录下相关文档
