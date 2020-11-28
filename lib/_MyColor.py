@@ -352,7 +352,9 @@ class ColorChoiceFrame(Toplevel):
 
     # @_debug.printk()
     def ChangeBtnStyle(self, obj, color):
-        # print(color)
+        '''
+            按钮样式更改函数，更改时同样需要检测是否存在已按下按钮
+        '''
         status = self.CheckIfOtherBtnIsSunken()
         if obj['text'] == '×':
 
@@ -366,6 +368,9 @@ class ColorChoiceFrame(Toplevel):
 
     # @_debug.printk()
     def CheckIfOtherBtnIsSunken(self):
+        '''
+            检查是否有其他按钮已经被按下
+        '''
         for btn in self.btn_list:
             if btn['text'] == '√':
                 return True

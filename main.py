@@ -19,12 +19,13 @@
 '''
     @file: main.py
     @author: hz
-    @version: v1.1
-    @date: 2020-10-21
+    @version: v1.2
+    @date: 2020-11-29
     @brief: register_sprite update
 '''
 
 # import **************************************************
+import ctypes
 from tkinter import *
 import tkinter as tk
 
@@ -61,18 +62,13 @@ class MyGui(Frame):
 
         self.init_frame()
         self.init_menu()
+        self.init_color()
         self.init_view()
 
     @_debug.printk()
     def init_frame(self):
         self.Window.title('寄存器小精灵')
-
-        # 长宽 和 xy偏移
-        width = 650
-        height = 350
-        offset_x = 100
-        offset_y = 200
-        self.Window.geometry('{0}x{1}+{2}+{3}'.format(width, height, offset_x, offset_y))
+        
 
     @_debug.printk()
     def init_menu(self):
@@ -109,13 +105,18 @@ class MyGui(Frame):
         menuBar.add_cascade(label='文件', menu=fileBar, font=menu_font_tuple)
 
     @_debug.printk()
+    def init_color(self):
+        pass
+
+    @_debug.printk()
     def create_obj_group(self, frame, row, column):
         # 4次循环
         for i in range(4):
             lbl = tk.Label(frame,
                            background=self.bg_color,
                            text=self.btn_num,
-                           font=("宋体", 9, "bold"))
+                           font=("宋体", 9, "bold")
+                           )
             lbl.grid(row=row,
                      column=column + i,
                      sticky=W + E + N + S, padx=7, pady=7)
@@ -644,6 +645,8 @@ class MyGui(Frame):
             self.Window.attributes("-toolwindow", 0)
             self.Window.wm_attributes("-topmost", 0)
 
+
+    # 背景色切换窗口生成函数
     def askColorInfo(self):
         color_input = _MyColor.ColorChoiceFrame(master=self.Window)
         self.Window.wait_window(color_input)
@@ -702,7 +705,17 @@ class MyGui(Frame):
 def main():
 
     root = Tk()
+    # 设置窗口大小不可更改
     root.resizable(0, 0)
+
+    # 适配高分屏下程序界面、字体模糊
+    # 调用api设置成由应用程序缩放
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    # 调用api获得当前的缩放因子
+    ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0)
+    # 设置缩放因子
+    root.tk.call('tk', 'scaling', ScaleFactor / 75)
+
     app = MyGui(master=root)
     app.mainloop()
 
