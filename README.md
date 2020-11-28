@@ -35,6 +35,7 @@
 使用到的库
 -----
 ```python
+import ctypes
 from tkinter import *
 import tkinter as tk
 import time
