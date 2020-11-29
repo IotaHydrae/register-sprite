@@ -5,11 +5,11 @@
 
 预览图
 ---
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic1.png)
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic1.png)
 ---
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic2.png)
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic2.png)
 ---
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic3.png)
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic3.png)
 
 注意事项
 ----
