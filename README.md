@@ -3,6 +3,14 @@
 寄存器小精灵（Register Sprite）基于**python tkinter**编写，具有良好的界面和一些简单的交互功能，它可以轻松实现**10进制**、**16进制**、**8进制**和**2进制**之间的转换，方便用于学习各种嵌入式寄存器的位配置，嵌入式工程师的**必备神器**。
 我提供了使用**pyinstaller**构建好的可执行文件，当然你也可以**修改后**构建自己的EXE文件
 
+预览图
+---
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic1.png)
+---
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic2.png)
+---
+![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/pic3.png)
+
 注意事项
 ----
 程序首次运行会在根目录下生成配置文件，移动配置文件位置会导致保存的设置失效
