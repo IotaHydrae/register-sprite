@@ -62,7 +62,7 @@ from functools import wraps
 # _file_operations.py
 import configparser
 
-# _MyColor.py
+# _color_operations.py
 import tkinter as tk
 from tkinter import Tk, Label, Button, Toplevel
 ```

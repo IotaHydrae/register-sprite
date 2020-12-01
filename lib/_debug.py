@@ -19,7 +19,6 @@
 import time
 from functools import wraps
 
-
 '''
     @file: _debug.py
     @author: hz
@@ -27,6 +26,26 @@ from functools import wraps
     @date: 2020-10-22
     @brief: 调试相关
 '''
+ONE_SPACE = " "
+TWO_SPACE = "  "
+THREE_SPACE = "   "
+
+
+def timer_start(self):
+    """ 启动计时器 """
+    global g_time_start
+
+    g_time_start = time.time()
+
+
+def timer_stop(self):
+    global g_time_delta, g_time_end
+
+    g_time_end = time.time()
+    g_time_delta = g_time_end - g_time_start
+    print((g_time_delta * 1000))
+
+
 class printk(object):
 
     def __init__(self, *args, **kwargs):
@@ -36,7 +55,7 @@ class printk(object):
 
         @wraps(func)
         def wrapped_function(*args, **kwargs):
-            this_time = self.get_current_time()
+            this_time = get_current_time()
             hour = this_time[0]
             min = this_time[1]
             sec = this_time[2]
@@ -47,15 +66,31 @@ class printk(object):
 
             program_status = 'OK'
             log_string = func.__code__
-            print(f'[    {hour}:{min}:{sec}  ]', log_string, " was called",end=' ')
+            print(f'[{THREE_SPACE}{hour}:{min}:{sec}{TWO_SPACE}]', log_string, " was called", end=' ')
             print(f' [\033[32m {program_status} \033[0m] ')
             return func(*args, **kwargs)
 
         return wrapped_function
 
-    def get_current_time(self):
-        this_time = time.localtime(time.time())
-        hour = this_time.tm_hour
-        min = this_time.tm_min
-        sec = this_time.tm_sec
-        return [hour, min, sec]
+
+def get_current_time():
+    this_time = time.localtime(time.time())
+    hour = this_time.tm_hour
+    min = this_time.tm_min
+    sec = this_time.tm_sec
+    return [hour, min, sec]
+
+
+def _timeit(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        hour, min, sec = get_current_time()
+
+        print(f'[{THREE_SPACE}{hour}:{min}:{sec}{TWO_SPACE}]' + ONE_SPACE \
+              + 'Function ** {} ** executed in {:.4f} seconds'.format(func.__name__, (end - start)))
+        return result
+
+    return wrapper

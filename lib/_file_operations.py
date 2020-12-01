@@ -27,19 +27,21 @@
 # import **************************************************
 import configparser
 
+
 class FileOperations():
     def __init__(self):
         self.config = configparser.ConfigParser()
         pass
 
+    # 写配置文件section属性，若存在将覆盖原属性值
     def write_config(self, path, section, key, value):
         self.config.read(path)
         # 读取配置文件原数据，追加写入
         self.config = self.read_config_all(path)
         # 如果输入section不在目标文件中
         if section not in self.config.sections():
-            self.config.add_section(section)    # 添加输入section
-            self.config.set(section, key, value)    # 设置属性
+            self.config.add_section(section)  # 添加输入section
+            self.config.set(section, key, value)  # 设置属性
             self.config.write(open(path, 'w'))
         else:
             self.config.set(section, key, value)
@@ -52,9 +54,9 @@ class FileOperations():
         self.config = self.read_config_all(path)
 
         if section not in self.config.sections():
-            self.config.add_section(section)    # 添加输入section
+            self.config.add_section(section)  # 添加输入section
             for key in data_dict:
-                self.config.set(section, key, data_dict[key])   # 设置属性
+                self.config.set(section, key, data_dict[key])  # 设置属性
             self.config.write(open(path, 'w'))
         else:
             # section存在于目标文件中，追加属性
@@ -83,8 +85,9 @@ class FileOperations():
             options = self.config.options(section)
             for option in options:
                 value = self.config.get(section, option)
-                self.config.set(section,option,value)
+                self.config.set(section, option, value)
         return self.config
+
 
 def main():
     fops = FileOperations()
@@ -102,6 +105,7 @@ def main():
     data = fops.read_config(path, 'Color', 'text_color')
     print(data)
     pass
+
 
 if __name__ == '__main__':
     main()

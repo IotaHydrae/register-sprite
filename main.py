@@ -30,7 +30,7 @@ import os
 import tkinter as tk
 from tkinter import *
 
-from lib import _MyColor
+from lib import _color_operations
 from lib import _debug
 from lib import _file_operations
 
@@ -724,7 +724,7 @@ class MyGui(Frame):
     @_debug.printk()
     # 背景色切换窗口生成函数
     def askColorInfo(self):
-        color_input = _MyColor.ColorChoiceFrame(master=self.Window)
+        color_input = _color_operations.ColorChoiceFrame(master=self.Window)
         self.Window.wait_window(color_input)
         # print(color_input.color_data_list)
         return color_input.current_btn_value
@@ -742,7 +742,7 @@ class MyGui(Frame):
         target_color = self.askColorInfo()
         self.ChangeBackgroundColor(target_color)
 
-    @_debug.printk()
+    @_debug._timeit
     # 背景色切换函数
     def ChangeBackgroundColor(self, color):
         '''
@@ -757,7 +757,7 @@ class MyGui(Frame):
         err = 1
         try:
             # 窗体背景颜色更换
-            self.bg_color.value = _MyColor.GetColor(color)
+            self.bg_color.value = _color_operations.GetColor(color)
             # 将背景颜色写入配置文件
             self.fops.write_config(path=self.path_user_config,
                                    section='Color',
@@ -813,4 +813,5 @@ def main():
 
 
 if __name__ == '__main__':
+
     main()

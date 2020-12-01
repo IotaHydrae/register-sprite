@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
-    @file: _MyColor.py
+    @file: _color_operations.py
     @author: hz
     @version:
     @date: 21-10-2020
@@ -167,14 +167,18 @@ colors = '''#FFB6C1 LightPink 浅粉红
 #000000 Black 纯黑'''
 
 # import **************************************************
-import os
 import tkinter as tk
-from tkinter import Tk, Label, Button, Toplevel
+from tkinter import Label, Button, Toplevel
 
 
 def ColorInit():
+    """
+    初始话颜色列表，将字符串处理为列表
+    :return: 颜色列表
+    """
     color_list = colors.split('\n')
     return color_list
+
 
 def ShowColors():
     '''
@@ -209,10 +213,11 @@ def ShowColors():
     else:
         pass
 
+
 def GetColor(color_in):
     '''
         返回16进制的颜色值
-    :param color: 颜色参数，见上部列表16进制颜色值后
+    :param color_in: 颜色参数，见上部列表16进制颜色值后
     :return: selected color
     '''
     color_list = ColorInit()
@@ -223,13 +228,109 @@ def GetColor(color_in):
             # print(more_info_list[0])
             return more_info_list[0]
 
+
+SEPARATOR = "===="
+# 显示方式
+DISPLAY_START_DEFALUT = "\033[0m"
+DISPLAY_START_HIGHLIGHT = "\033[1m"
+DISPLAY_START_UNDERLINE = "\033[4m"
+DISPLAY_START_REVERSE = "\033[7m"
+
+# 前景色
+FOREGROUND_START_BLACK = "\033[30m"
+FOREGROUND_START_RED = "\033[31m"
+FOREGROUND_START_GREEN = "\033[32m"
+FOREGROUND_START_YELLOW = "\033[33m"
+FOREGROUND_START_BLUE = "\033[34m"
+FOREGROUND_START_PLUM = "\033[35m"
+FOREGROUND_START_CYAN = "\033[36m"
+FOREGROUND_START_WHITE = "\033[37m"
+
+# 背景色
+BACKGROUND_START_BLACK = "\033[40m"
+BACKGROUND_START_RED = "\033[41m"
+BACKGROUND_START_GREEN = "\033[42m"
+BACKGROUND_START_YELLOW = "\033[43m"
+BACKGROUND_START_BLUE = "\033[44m"
+BACKGROUND_START_PLUM = "\033[45m"
+BACKGROUND_START_CYAN = "\033[46m"
+BACKGROUND_START_WHITE = "\033[47m"
+# 结束标志
+END_ALL = "\033[0m"
+
+
+class FontStyle(object):
+    def __init__(self):
+        pass
+
+    # color_font("Hello World", 7, 32, 44)
+    def __render_font(self, text, command):
+        print(command)
+        print(hex(command))
+        display_type = command >> 8
+        foreground_color = (command & 0xf0) >> 4
+        background_color = (command & 0xf)
+        print(display_type, foreground_color, background_color)
+
+        style_start = f"\033[{display_type};3{foreground_color};4{background_color}m"
+        style_end = "\033[0m"
+
+        return f"{style_start}{text}{style_end}"
+
+    def color_font(self, text, display_type=None, foreground_color=None, backgroud_color=None):
+        """
+        改变打印到终端的文本样式
+        :param text: 输入的字符串
+        :param display_type: 显示方式   -----0: 默认值 1：高亮加粗 4：下划线 7：反显
+        :param foreground_color: 前景色 ----30：黑色 31：红色 32：绿色 33：黄色 34：蓝色： 35：梅色 36：青色 37：白色
+        :param backgroud_color: 背景色  ----40：黑色 41：红色 42：绿色 44：黄色 44：蓝色： 45：梅色 46：青色 47：白色
+        :return: 修改样式后的字符串
+        """
+        SUPPORT_DISPLAY_TYPE = [0, 1, 4, 7, None]
+        SUPPORT_FOREGROUD_COLOR = [30, 31, 32, 33, 34, 35, 36, 37, None]
+        SUPPORT_BACKGROUD_COLOR = [40, 41, 42, 43, 44, 45, 46, 47, None]
+        error_msg_head = "[   \033[31m WRONG\033[0m  ] "
+
+        tip_display_type = f"0: 默认值 {DISPLAY_START_HIGHLIGHT}1：高亮加粗{END_ALL} {DISPLAY_START_UNDERLINE}4：下划线{END_ALL} {DISPLAY_START_REVERSE}7：反显{END_ALL}"
+        tip_foregroud_color = f"{FOREGROUND_START_BLACK}30：黑色{END_ALL} 31：红色 32：绿色 33：黄色 34：蓝色： 35：梅色 36：青色 37：白色"
+        tip_backgroud_color = f"40：黑色 41：红色 42：绿色 44：黄色 44：蓝色： 45：梅色 46：青色 47：白色"
+
+        #
+        flag_display = True if display_type in SUPPORT_DISPLAY_TYPE else False
+        flag_foreground = True if foreground_color in SUPPORT_FOREGROUD_COLOR else False
+        flag_background = True if backgroud_color in SUPPORT_BACKGROUD_COLOR else False
+
+        print(
+            error_msg_head + f"SUPPORT_DISPLAY_TYPE: {SUPPORT_DISPLAY_TYPE}{SEPARATOR}" + tip_display_type) \
+            if not flag_display else None
+        print(
+            error_msg_head + f"SUPPORT_FOREGROUD_COLOR: {SUPPORT_FOREGROUD_COLOR}{SEPARATOR}" + tip_foregroud_color) \
+            if not flag_foreground else None
+        print(
+            error_msg_head + f"SUPPORT_BACKGROUD_COLOR: {SUPPORT_BACKGROUD_COLOR}{SEPARATOR}" + tip_backgroud_color) \
+            if not flag_background else None
+
+        # color_font("Hello World", 7, 32, 44)
+
+        if flag_display and flag_foreground and flag_background:
+            command1 = display_type << 8 if display_type != None else 0x0E << 8
+            command2 = (foreground_color % 30) << 4 if foreground_color != None else 0x0C << 4
+            command3 = (backgroud_color % 40) if backgroud_color != None else 0x0A
+            command = command1 | command2 | command3
+            return self.__render_font(text, command)
+        else:
+            return self.__render_font("TRY AGAIN PLEASE", 0)
+
+
 # import **************************************************
 import random
+
+
 # from lib import _debug
 
 class ColorChoiceFrame(Toplevel):
     '''
-        @file: _MyColor.py
+        @file: _color_operations.py
         @author: hz
         @version:
         @date: 2020-10-22
@@ -320,7 +421,6 @@ class ColorChoiceFrame(Toplevel):
 
         # print(this_color_list)
 
-
         '''
             行控件生成 结构：
             占位符|Label标签|选定按钮
@@ -328,8 +428,8 @@ class ColorChoiceFrame(Toplevel):
         for count in range(5):
             current_color_list = this_color_list[count].split(' ')
             color_hex = current_color_list[0]
-            color_en  = current_color_list[1]
-            color_zh  = current_color_list[2]
+            color_en = current_color_list[1]
+            color_zh = current_color_list[2]
 
             # 占位符
             Label(frame, text=' ', width=1).pack(side=tk.LEFT)
@@ -342,9 +442,9 @@ class ColorChoiceFrame(Toplevel):
 
             # 颜色选中按钮
             obj = Button(frame,
-                   text='×',
-                   width=3)
-            obj.config(command = lambda button=obj, color=color_zh: self.ChangeBtnStyle(button, color))
+                         text='×',
+                         width=3)
+            obj.config(command=lambda button=obj, color=color_zh: self.ChangeBtnStyle(button, color))
             obj.pack(side=tk.LEFT)
             obj.place_forget()
 
@@ -395,9 +495,19 @@ class ColorChoiceFrame(Toplevel):
         else:
             pass
 
+
 if __name__ == '__main__':
     # root = tk.Tk()
     # app = ColorChoiceFrame(master=root)
     # app.mainloop()
     # GetColor('橙红色')
+
+    font = FontStyle()
+    print(font.color_font("Hello World!", display_type=8))      # 下划线
+    print(font.color_font("Hello World!", display_type=7))      # 反显
+    print(font.color_font("Hello World!", foreground_color=32))     # 绿色前景
+    print(font.color_font("Hello World!", foreground_color=36, backgroud_color=43))     # 青色前景，黄色背景
+    print(font.color_font("Hello World!", backgroud_color=44))      # 蓝色背景
+    # 反显，红色前景变红色背景，青色背景变青色亲啊前景
+    print(font.color_font("Hello World!", display_type=7, foreground_color=31, backgroud_color=46))
     pass
