@@ -1,7 +1,12 @@
 # RegisterSprite  Copyright (C) 2020  jessenhua (h1657802074@gmail.com)
 
 # This file is part of RegisterSprite
-
+#   ____ ____  _      __     _______  ___
+#  / ___|  _ \| |     \ \   / /___ / / _ \
+# | |  _| |_) | |      \ \ / /  |_ \| | | |
+# | |_| |  __/| |___    \ V /  ___) | |_| |
+#  \____|_|   |_____|    \_/  |____(_)___/
+#
 # RegisterSprite is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -265,12 +270,12 @@ class FontStyle(object):
 
     # color_font("Hello World", 7, 32, 44)
     def __render_font(self, text, command):
-        print(command)
-        print(hex(command))
+        # print(command)
+        # print(hex(command))
         display_type = command >> 8
         foreground_color = (command & 0xf0) >> 4
         background_color = (command & 0xf)
-        print(display_type, foreground_color, background_color)
+        # print(display_type, foreground_color, background_color)
 
         style_start = f"\033[{display_type};3{foreground_color};4{background_color}m"
         style_end = "\033[0m"

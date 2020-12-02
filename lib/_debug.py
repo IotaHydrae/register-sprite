@@ -1,7 +1,12 @@
 # RegisterSprite  Copyright (C) 2020  jessenhua (h1657802074@gmail.com)
 
 # This file is part of RegisterSprite
-
+#   ____ ____  _      __     _______  ___
+#  / ___|  _ \| |     \ \   / /___ / / _ \
+# | |  _| |_) | |      \ \ / /  |_ \| | | |
+# | |_| |  __/| |___    \ V /  ___) | |_| |
+#  \____|_|   |_____|    \_/  |____(_)___/
+#
 # RegisterSprite is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +23,7 @@
 # import **************************************************
 import time
 from functools import wraps
+from lib import _color_operations
 
 '''
     @file: _debug.py
@@ -49,25 +55,24 @@ def timer_stop(self):
 class printk(object):
 
     def __init__(self, *args, **kwargs):
+        self.fontstyle = _color_operations.FontStyle()
         pass
 
     def __call__(self, func):
 
         @wraps(func)
         def wrapped_function(*args, **kwargs):
-            this_time = get_current_time()
-            hour = this_time[0]
-            min = this_time[1]
-            sec = this_time[2]
-            if sec < 10:
-                sec = '0' + str(sec)
+            t = get_current_time()
+            mutil_time = f"{t[0]}:{t[1]}:{t[2]}"
+            styled_time = self.fontstyle.color_font(mutil_time, 1,33)
+            if t[2] < 10:
+                sec = '0' + str(t[2])
             else:
-                sec = sec
+                sec = t[2]
 
-            program_status = 'OK'
+            program_status = self.fontstyle.color_font('OK', 1, 32)
             log_string = func.__code__
-            print(f'[{THREE_SPACE}{hour}:{min}:{sec}{TWO_SPACE}]', log_string, " was called", end=' ')
-            print(f' [\033[32m {program_status} \033[0m] ')
+            print(f'[{THREE_SPACE}{styled_time}{TWO_SPACE}] {program_status} ', log_string, " was called")
             return func(*args, **kwargs)
 
         return wrapped_function
