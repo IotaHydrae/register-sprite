@@ -513,7 +513,7 @@ class MyGui(Frame):
         _hex = '0x' + temp_str + _hex.split('x')[1]
         not_hex = '0x' + temp_str_not + not_hex.split('x')[1]
 
-        # 得到8进制数据，八进制在32位cpu中不常用，这里为了功能拓展才添加的
+        # 得到8进制数据
         _oct = oct(dec)
 
         '''
