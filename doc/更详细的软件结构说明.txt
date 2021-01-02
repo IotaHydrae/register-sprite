@@ -7,16 +7,16 @@
 软件结构：
 
 lib--[ _debug.py		自定义的调试库
-	 [ _MyColor.py		样式库
+	 [ _color_operations.py		样式库
 main.py
 		
 		{ init_frame 初始化软件各frame
 main.py { init_menu  初始化菜单
 		{ init_view  初始化控件
 
-		   { 主窗口标题
-init_frame { 窗口的长宽
-		   { 窗口相对屏幕左上角的XY轴偏移
+init_frame { 主窗口标题
+
+
 
 							{ CPU字长设置（暂未实现）
 					 { 设置 { 背景色
@@ -54,5 +54,5 @@ _debug.py
 待补充
 
 
-_MyColor.py		
+_color_operations.py		
 待补充	
