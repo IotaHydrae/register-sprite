@@ -50,7 +50,6 @@ import ctypes
 import os
 import tkinter as tk
 from tkinter import *
-import PySimpleGUI
 
 from lib import _color_operations
 from lib import _debug
@@ -823,12 +822,13 @@ def main():
     root.resizable(0, 0)
 
     # 适配高分屏下程序界面、字体模糊
+    # 注意以下设置仅适用于windows系统
     # 调用api设置成由应用程序缩放
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
-    # 调用api获得当前的缩放因子
-    ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0)
-    # 设置缩放因子
-    root.tk.call('tk', 'scaling', ScaleFactor / 75)
+    # ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    # # 调用api获得当前的缩放因子
+    # ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0)
+    # # 设置缩放因子
+    # root.tk.call('tk', 'scaling', ScaleFactor / 75)
 
     app = MyGui(master=root)
     app.mainloop()

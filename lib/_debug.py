@@ -72,7 +72,7 @@ class printk(object):
 
             program_status = self.fontstyle.color_font('OK', 1, 32)
             log_string = func.__code__
-            print(f'[{THREE_SPACE}{styled_time}{TWO_SPACE}] {program_status} ', log_string, " was called")
+            print(f'[{THREE_SPACE}{styled_time}{TWO_SPACE}] {program_status} ', log_string, self.fontstyle.color_font("DEBUG INFO",4,32))
             return func(*args, **kwargs)
 
         return wrapped_function
