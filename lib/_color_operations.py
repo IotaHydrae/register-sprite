@@ -397,7 +397,7 @@ class ColorChoiceFrame(Toplevel):
                        text="关闭",
                        bg='#ffffff',
                        width=5)
-        close.config(command=self.destroy)
+        close.config(command=self.destroy_command)
         close.pack(side=tk.RIGHT)
         # 确定按钮
         determine = Button(row5,
@@ -499,6 +499,12 @@ class ColorChoiceFrame(Toplevel):
             self.destroy()
         else:
             pass
+
+    def destroy_command(self):
+        self.color_data_list.clear()
+        self.current_btn_value="None"
+        self.color_data_list.append("None")
+        self.destroy()
 
 
 if __name__ == '__main__':

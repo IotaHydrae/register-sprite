@@ -50,6 +50,7 @@ import ctypes
 import os
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 
 from lib import _color_operations
 from lib import _debug
@@ -117,7 +118,6 @@ class MyGui(Frame):
 
     @_debug.printk()
     def init_frame(self):
-
         if self.flag_user_config:
             # 尝试获取Main窗口标题属性值
             try:
@@ -145,7 +145,7 @@ class MyGui(Frame):
     @_debug.printk()
     def init_menu(self):
         menu_font_type = "黑体"
-        menu_font_size = 12
+        menu_font_size = 10
         menu_font_tuple = (menu_font_type, menu_font_size)
 
         menuBar = Menu(self.Window, font=menu_font_tuple)
@@ -175,8 +175,18 @@ class MyGui(Frame):
 
         # 帮助菜单
         helpBar = Menu(menuBar, tearoff=0)
-        helpBar.add_command(label="关于", command="", font=menu_font_tuple)
+        helpBar.add_command(label="关于", command=self.about, font=menu_font_tuple)
         menuBar.add_cascade(label="帮助", menu=helpBar, font=menu_font_tuple)
+
+    def about(self):
+        about_info = \
+        """
+            寄存器小精灵 | Register Sprite 
+            项目地址： http://www.gitee.com/JensenHua/register_sprite
+            版本： v2021.1
+        """
+        messagebox.showinfo("关于", about_info)
+
 
     @_debug.printk()
     def init_color(self):
@@ -767,7 +777,9 @@ class MyGui(Frame):
     def BackgroundColorCommand(self):
         # 拉起颜色选择窗口
         target_color = self.askColorInfo()
-        self.ChangeBackgroundColor(target_color)
+        print(target_color)
+        if target_color != "None":
+            self.ChangeBackgroundColor(target_color)
 
     @_debug._timeit
     # 背景色切换函数
