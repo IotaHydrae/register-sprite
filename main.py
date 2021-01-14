@@ -144,23 +144,24 @@ class MyGui(Frame):
 
     @_debug.printk()
     def init_menu(self):
-        menu_font_type = "宋体"
-        menu_font_size = 11
+        menu_font_type = "黑体"
+        menu_font_size = 12
         menu_font_tuple = (menu_font_type, menu_font_size)
 
-        menuBar = Menu(self.Window, tearoff=0)
+        menuBar = Menu(self.Window, font=menu_font_tuple)
+
         self.Window.config(menu=menuBar)
 
         # cpu字长选择菜单
-        cwlBar = Menu(menuBar, tearoff=0)
-        cwlBar.add_command(label="64位", command=lambda cwl='64': self.CWL_change(cwl))
-        cwlBar.add_command(label="32位", command=lambda cwl='32': self.CWL_change(cwl))
-        cwlBar.add_command(label="16位", command=lambda cwl='16': self.CWL_change(cwl))
-        cwlBar.add_command(label="8位", command=lambda cwl='8': self.CWL_change(cwl))
+        # cwlBar = Menu(menuBar, tearoff=0)
+        # cwlBar.add_command(label="64位", command=lambda cwl='64': self.CWL_change(cwl))
+        # cwlBar.add_command(label="32位", command=lambda cwl='32': self.CWL_change(cwl))
+        # cwlBar.add_command(label="16位", command=lambda cwl='16': self.CWL_change(cwl))
+        # cwlBar.add_command(label="8位", command=lambda cwl='8': self.CWL_change(cwl))
 
         # 设置菜单
         settingBar = Menu(menuBar, tearoff=0)
-        settingBar.add_cascade(label="CPU字长", menu=cwlBar, font=menu_font_tuple)
+        # settingBar.add_cascade(label="CPU字长", menu=cwlBar, font=menu_font_tuple)
         settingBar.add_command(label="背景色",
                                command=self.BackgroundColorCommand,
                                font=menu_font_tuple)
@@ -171,6 +172,11 @@ class MyGui(Frame):
         fileBar.add_separator()
         fileBar.add_command(label="退出", command=self.quit, font=menu_font_tuple)
         menuBar.add_cascade(label='文件', menu=fileBar, font=menu_font_tuple)
+
+        # 帮助菜单
+        helpBar = Menu(menuBar, tearoff=0)
+        helpBar.add_command(label="关于", command="", font=menu_font_tuple)
+        menuBar.add_cascade(label="帮助", menu=helpBar, font=menu_font_tuple)
 
     @_debug.printk()
     def init_color(self):
@@ -684,7 +690,7 @@ class MyGui(Frame):
         self.show_data()
 
     '''
-        左右移位这个功能
+        左右移位功能
     '''
 
     @_debug.printk()
