@@ -107,4 +107,4 @@ from tkinter import Tk, Label, Button, Toplevel
   > 你的每一份贡献都是对这个项目极大的帮助
   
 @[hz2](https://gitee.com/JensenHua/)
-我的邮箱（h1657802073@gmail.com）
+我的个人邮箱（1657802074@qq.com）

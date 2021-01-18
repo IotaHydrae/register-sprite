@@ -77,6 +77,7 @@ class MyGui(Frame):
         self.flag_user_config = False  # 用户配置文件标识，False为不存在
         self.path_user_config = r'./user-config.ini'  # 用户配置文件路径
         self.fops = _file_operations.FileOperations()  # 配置文件操作
+        self.fontstyle = _color_operations.FontStyle() # 终端打印样式
 
         self.lbl_list = []  # 按钮上label列表
         self.btn_list = []  # 位按钮列表
@@ -170,13 +171,21 @@ class MyGui(Frame):
         fileBar = Menu(menuBar, tearoff=0)
         fileBar.add_cascade(label="设置", menu=settingBar, font=menu_font_tuple)
         fileBar.add_separator()
-        fileBar.add_command(label="退出", command=self.quit, font=menu_font_tuple)
+        fileBar.add_command(label="退出", command=self.my_quit, font=menu_font_tuple)
         menuBar.add_cascade(label='文件', menu=fileBar, font=menu_font_tuple)
 
         # 帮助菜单
         helpBar = Menu(menuBar, tearoff=0)
         helpBar.add_command(label="关于", command=self.about, font=menu_font_tuple)
         menuBar.add_cascade(label="帮助", menu=helpBar, font=menu_font_tuple)
+
+    def my_quit(self):
+        message = self.fontstyle.color_font(text="Bye",
+                                            display_type=7,
+                                            foreground_color=31,
+                                            backgroud_color=46)
+        print(message)
+        self.quit()
 
     def about(self):
         about_info = \
