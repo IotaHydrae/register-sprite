@@ -46,9 +46,9 @@ https://gitee.com/JensenHua/register_sprite
 """
 
 # import **************************************************
-import ctypes
 import os
 import tkinter as tk
+from math import pow
 from tkinter import *
 from tkinter import messagebox
 
@@ -64,6 +64,60 @@ class MyGui(Frame):
             self.name = name
             self.value = value
 
+    # event start ***************************************************
+
+    # 16进制Entry回车事件处理函数
+    def update_btn_val_by_entry(self, event):
+
+        origin_data = self.hex_output.get()
+        # print(hex(int(origin_data)))
+        # 尝试去除0x前缀
+        if (origin_data[0:2] == "0x"):
+            origin_data = origin_data[2:]
+
+
+        # 数据处理
+        # 16进制转10进制
+
+
+        hex_data = origin_data
+        dec_data = 0
+        # bit_cnt = 0
+        # while True:
+        #     if (hex_data <= 0):
+        #         break
+        #     last_bit = hex_data % 10
+        #     dec_data += pow(16, bit_cnt) * last_bit
+        #     hex_data = int(hex_data / 10)
+        #     bit_cnt += 1
+        weight = len(hex_data)-1
+        for bit in hex_data:
+            dec_data+=self.dict_hex_after9[bit] * pow(16, weight)
+            weight-=1
+            pass
+
+
+        # 获取数据二进制字符串
+        dec_data = int(dec_data)
+        str_bin_data = str(bin(dec_data))[2:]
+
+        # 设置按钮位
+        btn_cnt = 32
+        data_length = len(str_bin_data)
+        for btn in self.btn_list:
+            if btn_cnt > data_length:
+                btn['text'] = '0'
+                btn_cnt -= 1
+                continue
+            btn['text'] = str_bin_data[0]
+            str_bin_data = str_bin_data[1:]
+
+        # 更新样式以及数据
+        self.update_btn_style()
+        self.show_data()
+
+    # event end ***************************************************
+
     # 结构体生成函数
     def make_struct(self, name, value):
         return self.Namedvariable(name=name, value=value)
@@ -77,7 +131,7 @@ class MyGui(Frame):
         self.flag_user_config = False  # 用户配置文件标识，False为不存在
         self.path_user_config = r'./user-config.ini'  # 用户配置文件路径
         self.fops = _file_operations.FileOperations()  # 配置文件操作
-        self.fontstyle = _color_operations.FontStyle() # 终端打印样式
+        self.fontstyle = _color_operations.FontStyle()  # 终端打印样式
 
         self.lbl_list = []  # 按钮上label列表
         self.btn_list = []  # 位按钮列表
@@ -98,14 +152,21 @@ class MyGui(Frame):
         self.color_dict['buttoncolor'] = self.btn_color.value
         self.color_dict['textcolor'] = self.text_color.value
 
-        # 初始化操作
+
+        # 初始化16进制字典
+        self.dict_hex_after9 = {}
+        upper_str_hex_after9 = "0123456789ABCDEF"
+        lower_str_hex_after9 = upper_str_hex_after9.lower()
+        for i in range(0,16):
+            self.dict_hex_after9[upper_str_hex_after9[i]]=i
+            self.dict_hex_after9[lower_str_hex_after9[i]]=i
+
+        # 界面初始化操作
         self.init_user_config()
         self.init_frame()
         self.init_menu()
         self.init_color()
         self.init_view()
-
-        # print(self.ChangeBackgroundColor(self.bg_color))
 
     @_debug.printk()
     def init_user_config(self):
@@ -189,13 +250,12 @@ class MyGui(Frame):
 
     def about(self):
         about_info = \
-        """
-            寄存器小精灵 | Register Sprite 
-            项目地址： http://www.gitee.com/JensenHua/register_sprite
-            版本： v2021.1
-        """
+            """
+                寄存器小精灵 | Register Sprite 
+                项目地址： http://www.gitee.com/JensenHua/register_sprite
+                版本： v2021.5
+            """
         messagebox.showinfo("关于", about_info)
-
 
     @_debug.printk()
     def init_color(self):
@@ -246,7 +306,7 @@ class MyGui(Frame):
 
             '''
                 这是for循环生成按钮，同时单独操作每个按钮的解决方案
-                lambda button=obj: self_bit(button)
+                lambda button=obj: set_bit(button)
                 这样每个按钮被点击时都会有自己独立的调用方式——将自己传给处理函数
                 
             '''
@@ -360,21 +420,28 @@ class MyGui(Frame):
                                 background='#f0f0f0',
                                 width=40,
                                 font=("宋体", 12, "bold"))
+        self.hex_output.bind('<Return>', func=self.update_btn_val_by_entry)
         self.hex_output.pack(side=TOP)
+
         self.decimal_output = Entry(self.frame_entry,
                                     background='#f0f0f0',
                                     width=40,
                                     font=("宋体", 12, "bold"))
+        # self.decimal_output.bind('<Return>', func=self.update_btn_val_by_entry)
         self.decimal_output.pack(side=TOP)
+
         self.octal_output = Entry(self.frame_entry,
                                   background='#f0f0f0',
                                   width=40,
                                   font=("宋体", 12, "bold"))
+        # self.octal_output.bind('<Return>', func=self.update_btn_val_by_entry)
         self.octal_output.pack(side=TOP)
+
         self.binary_output = Entry(self.frame_entry,
                                    background='#f0f0f0',
                                    width=40,
                                    font=("宋体", 12, "bold"))
+        # self.binary_output.bind('<Return>', func=self.update_btn_val_by_entry)
         self.binary_output.pack(side=TOP)
 
         '''
@@ -841,6 +908,8 @@ class MyGui(Frame):
         except:
             return -err
 
+    # 事件
+
 
 @_debug.printk()
 def main():
@@ -862,5 +931,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()
