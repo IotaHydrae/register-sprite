@@ -26,19 +26,17 @@
   
     > 作者提供了位于bin目录下构建好的exe文件
 
+使用说明
+----
+----
+###通过点击寄存器位按钮，更新底部各进制输入框中的数据，反之亦然。
+> 暂时仅支持修改16进制输入框中的数据更新寄存器位按钮
+
 保持更新
 ----
 ```shell script
 git pull origin
 ```
-
-预览图
----
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic1.png)
----
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic2.png)
----
-![avatar](http://ngrok.huazheng.club/wp-content/uploads/2020/11/my_pic3.png)
 
 注意事项
 ----
@@ -56,21 +54,24 @@ git pull origin
 
 目录结构及说明
 ----
-├── bin		*----------可执行文件* <br>
+├── bin		*----------可执行文件(最初版本)* <br>
 │   └── register_sprite_v1.1_win64_exe.7z		<br>
 ├── doc		*----------软件文档目录* <br>
 │   ├── 更详细的软件结构说明.txt		<br>
 │   └── 更新日志.txt		<br>
+│   └── ...		<br>
 ├── lib		*----------库文件*<br>
 │   ├── __init__.py		<br>
 │   ├── _debug.py		*----------调试库*<br>
 │   └── _color_operations.py		*----------样式库*<br>
 │   └── _file_operations.py		*----------文件操作库*<br>
-├── LICENSE		*----------许可证信息<br>
+├── LICENSE		*----------许可证信息*<br>
 ├── main.py		*----------主程序*<br>
-├── README.en.md		<br>
-├── README.md		<br>
-├── user-config.ini	  *----------用户配置文件*	<br>├── run.bat	  *----------batch启动文件	<br>
+├── README.en.md	*----------README for english*	<br>
+├── README.md	*----------README*	<br>
+├── user-config.ini	  *----------用户配置文件*	<br>
+├── run.bat	  *----------batch启动文件*	<br>
+├── run.sh	  *----------shell启动文件*	<br>
 └── src		*-----------资源目录*<br>
 
 *5 directories, 13 files*
