@@ -28,7 +28,7 @@
 |  _ <  __/ (_| | \__ \ ||  __/ |     ___) | |_) | |  | | ||  __/
 |_| \_\___|\__, |_|___/\__\___|_|    |____/| .__/|_|  |_|\__\___|
            |___/                           |_|
-           
+
 https://gitee.com/JensenHua/register_sprite
 
     _    ____  __  __     _     _
@@ -48,7 +48,6 @@ https://gitee.com/JensenHua/register_sprite
 # import **************************************************
 import os
 import tkinter as tk
-from math import pow
 from tkinter import *
 from tkinter import messagebox
 
@@ -58,7 +57,7 @@ from lib import _file_operations
 
 
 class MyGui(Frame):
-    # 自定义结构体
+    # kv结构体
     class Namedvariable(object):
         def __init__(self, name, value):
             self.name = name
@@ -68,36 +67,30 @@ class MyGui(Frame):
 
     # 16进制Entry回车事件处理函数
     def update_btn_val_by_entry(self, event):
-
         origin_data = self.hex_output.get()
-        # print(hex(int(origin_data)))
         # 尝试去除0x前缀
-        if (origin_data[0:2] == "0x"):
+        if origin_data[0:2] == "0x":
             origin_data = origin_data[2:]
-
 
         # 数据处理
         # 16进制转10进制
 
-
         hex_data = origin_data
         dec_data = 0
-        # bit_cnt = 0
-        # while True:
-        #     if (hex_data <= 0):
-        #         break
-        #     last_bit = hex_data % 10
-        #     dec_data += pow(16, bit_cnt) * last_bit
-        #     hex_data = int(hex_data / 10)
-        #     bit_cnt += 1
-        weight = len(hex_data)-1
+        weight = len(hex_data) - 1  # 权
+        # 遍历十六进制数据各位（从左边开始）,递减权重
         for bit in hex_data:
-            dec_data+=self.dict_hex_after9[bit] * pow(16, weight)
-            weight-=1
-            pass
+            # 判断数据有效性，累加十进制数据
+            if bit in list(self.upper_str_hex_after9) or bit in list(self.upper_str_hex_after9.lower()):
+                dec_data += self.dict_hex_after9[bit] * pow(16, weight)
+            else:
+                # 打印错误信息
+                print(self.fontstyle.color_font("ERROR, Unrecognized HEX <{}> From User Input!", 7, 31, 40).format(bit))
 
+            weight-=1
 
         # 获取数据二进制字符串
+        dec_data = int(dec_data)
         dec_data = int(dec_data)
         str_bin_data = str(bin(dec_data))[2:]
 
@@ -124,7 +117,7 @@ class MyGui(Frame):
 
     def __init__(self, master=None):
         super().__init__(master)
-        self.main_window_title = '寄存器小精灵'
+        self.main_window_title = 'Register Sprite'
         self.Window = master  # 主窗体
         self.pack()
 
@@ -152,21 +145,22 @@ class MyGui(Frame):
         self.color_dict['buttoncolor'] = self.btn_color.value
         self.color_dict['textcolor'] = self.text_color.value
 
-
         # 初始化16进制字典
         self.dict_hex_after9 = {}
-        upper_str_hex_after9 = "0123456789ABCDEF"
-        lower_str_hex_after9 = upper_str_hex_after9.lower()
-        for i in range(0,16):
-            self.dict_hex_after9[upper_str_hex_after9[i]]=i
-            self.dict_hex_after9[lower_str_hex_after9[i]]=i
+        self.upper_str_hex_after9 = "0123456789ABCDEF"
+        lower_str_hex_after9 = self.upper_str_hex_after9.lower()
+        for i in range(0, 16):
+            self.dict_hex_after9[self.upper_str_hex_after9[i]] = i
+            self.dict_hex_after9[lower_str_hex_after9[i]] = i
 
-        # 界面初始化操作
+        # 初始化操作
         self.init_user_config()
         self.init_frame()
         self.init_menu()
         self.init_color()
         self.init_view()
+
+        # print(self.ChangeBackgroundColor(self.bg_color))
 
     @_debug.printk()
     def init_user_config(self):
@@ -214,16 +208,8 @@ class MyGui(Frame):
 
         self.Window.config(menu=menuBar)
 
-        # cpu字长选择菜单
-        # cwlBar = Menu(menuBar, tearoff=0)
-        # cwlBar.add_command(label="64位", command=lambda cwl='64': self.CWL_change(cwl))
-        # cwlBar.add_command(label="32位", command=lambda cwl='32': self.CWL_change(cwl))
-        # cwlBar.add_command(label="16位", command=lambda cwl='16': self.CWL_change(cwl))
-        # cwlBar.add_command(label="8位", command=lambda cwl='8': self.CWL_change(cwl))
-
         # 设置菜单
         settingBar = Menu(menuBar, tearoff=0)
-        # settingBar.add_cascade(label="CPU字长", menu=cwlBar, font=menu_font_tuple)
         settingBar.add_command(label="背景色",
                                command=self.BackgroundColorCommand,
                                font=menu_font_tuple)
@@ -253,7 +239,7 @@ class MyGui(Frame):
             """
                 寄存器小精灵 | Register Sprite 
                 项目地址： http://www.gitee.com/JensenHua/register_sprite
-                版本： v2021.5
+                版本： v2021.1
             """
         messagebox.showinfo("关于", about_info)
 
@@ -306,9 +292,9 @@ class MyGui(Frame):
 
             '''
                 这是for循环生成按钮，同时单独操作每个按钮的解决方案
-                lambda button=obj: set_bit(button)
+                lambda button=obj: self_bit(button)
                 这样每个按钮被点击时都会有自己独立的调用方式——将自己传给处理函数
-                
+
             '''
             obj.config(command=lambda button=obj: self.set_bit(button))
             obj.grid(row=row + 1, column=column + i)
@@ -383,7 +369,7 @@ class MyGui(Frame):
         '''
         以下代码用来创建下半部分空间，包括x进制的label、Entry和复选框功能区
         frame_show继承自Window
-        
+
         frame_label用来存放进制的提示区
         frame_entry用来存放进制的回显区
         frame_choice用来存放复选功能
@@ -441,7 +427,7 @@ class MyGui(Frame):
                                    background='#f0f0f0',
                                    width=40,
                                    font=("宋体", 12, "bold"))
-        # self.binary_output.bind('<Return>', func=self.update_btn_val_by_entry)
+        # self.binary_output.bind('<Return>
         self.binary_output.pack(side=TOP)
 
         '''
@@ -493,34 +479,57 @@ class MyGui(Frame):
                                   command=self.isChecked)
         self.ck_btn.pack(side=TOP)
 
+        self.pro_btn_frame = Frame(self.frame_choice)
         # 左移功能按钮
-        self.lsh_btn = Button(self.frame_choice,
+        self.lsh_btn = Button(self.pro_btn_frame,
                               background=self.btn_color.value,
                               text="左移")
         self.lsh_btn.config(command=self.left_shift)
         self.lsh_btn.pack(side=LEFT)
 
         # 右移功能按键
-        self.rsh_btn = Button(self.frame_choice,
+        self.rsh_btn = Button(self.pro_btn_frame,
                               background=self.btn_color.value,
                               text="右移")
         self.rsh_btn.config(command=self.right_shift)
         self.rsh_btn.pack(side=LEFT)
 
         # 求非功能按键
-        self.not_btn = Button(self.frame_choice,
+        self.not_btn = Button(self.pro_btn_frame,
                               background=self.btn_color.value,
                               text="求非")
         self.not_btn.config(command=self.calc_not)
         self.not_btn.pack(side=LEFT)
 
         # 复位功能按键
-        self.rst_btn = Button(self.frame_choice,
+        self.rst_btn = Button(self.pro_btn_frame,
                               background=self.btn_color.value,
                               text="复位")
         self.rst_btn.config(command=self.bit_reset)
         self.rst_btn.pack(side=LEFT)
 
+        self.pro_btn_frame.pack(side=TOP)
+
+        self.frame_data_size = Frame(self.frame_choice)
+        # 数据大小，单位KB
+        self.label_bin_size = Label(self.frame_data_size,
+                                    background=self.bg_color.value,
+                                    text="数据大小",
+                                    font=("宋体", 9, "bold"))
+        self.label_bin_size.pack(side=LEFT)
+        self.entry_bin_size = Entry(self.frame_data_size,
+                                    background='#f0f0f0',
+                                    width=10,
+                                    font=("宋体", 12, "bold"))
+
+        self.entry_bin_size.pack(side=LEFT)
+        self.label_unit_size = Label(self.frame_data_size,
+                                     background=self.bg_color.value,
+                                     text="bits",
+                                     font=("宋体", 9, "bold"))
+        self.label_unit_size.pack(side=LEFT)
+        self.frame_data_size.configure(bg=self.bg_color.value)
+        self.frame_data_size.pack(side=TOP, pady=5, anchor='e')
         # 复选框区域打包
         self.frame_choice.pack(side=TOP)
         self.frame_choice.configure(bg=self.bg_color.value)
@@ -564,6 +573,7 @@ class MyGui(Frame):
 
         self.entry_hex_shift_set.delete(0, END)
         self.entry_hex_shift_clear.delete(0, END)
+        self.entry_bin_size.delete(0, END)
         self.binary_output['state'] = 'readonly'
 
     '''
@@ -664,6 +674,29 @@ class MyGui(Frame):
         # 更新进阶功能区
         self.entry_hex_shift_set.insert(0, current_value_str)
         self.entry_hex_shift_clear.insert(0, not_hex)
+
+        # 这里要注意，如果将十进制数据进行大小计算，需要在原数据上+1
+        this_dec = dec
+        result = 0
+        # 一些单位换算，后期可以独立出来作为功能甘薯
+        if this_dec < 8:
+            result = this_dec
+            self.label_unit_size['text'] = "bits"
+        elif this_dec >= 8 and this_dec < 1024:
+            result = this_dec / 8
+            self.label_unit_size['text'] = "Byte"
+        elif this_dec >= 1024 and this_dec < 0x100000:
+            result = this_dec / 1024
+            self.label_unit_size['text'] = "KByte"
+        elif this_dec >= 0x100000 and this_dec < 0x40000000:
+            result = this_dec / 0x100000
+            self.label_unit_size['text'] = "MByte"
+        else:
+            this_dec = dec + 1
+            result = this_dec / 0x40000000
+            self.label_unit_size['text'] = "GByte"
+
+        self.entry_bin_size.insert(0, result)
         self.binary_output['state'] = 'readonly'  # 将二进制回显区设置为只读
 
     '''
@@ -783,6 +816,11 @@ class MyGui(Frame):
     def left_shift(self):
         # 得到二进制数据
         _bin = self.get_bin_value(mode='normal')
+
+        # 判断数据是否有效
+        if int(_bin) == 0:
+            return
+
         # 左移数据
         _bin += '0'
         _bin = _bin[1:]
@@ -802,6 +840,11 @@ class MyGui(Frame):
         # print(' called！')
         # 得到二进制数据
         _bin = self.get_bin_value(mode='normal')
+
+        # 判断数据是否有效
+        if int(_bin) == 0:
+            return
+
         # 右移数据处理
         origin_bin = '0'
         origin_bin += _bin
@@ -862,10 +905,6 @@ class MyGui(Frame):
     def ChangeBackgroundColor(self, color):
         '''
             @author: hz
-            @version:
-            @date:
-            @brief:
-
         :param color: 用户将要切换的背景颜色
         :return: 程序执行状态
         '''
@@ -904,11 +943,15 @@ class MyGui(Frame):
 
             # checkbox背景颜色更换
             self.ck_btn.config(bg=self.bg_color.value)
+
+            # 数据大小背景色更换
+            self.frame_data_size.config(bg=self.bg_color.value)
+            self.label_bin_size.config(bg=self.bg_color.value)
+            self.label_unit_size.config(bg=self.bg_color.value)
+
             return err
         except:
             return -err
-
-    # 事件
 
 
 @_debug.printk()

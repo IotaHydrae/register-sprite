@@ -270,8 +270,6 @@ class FontStyle(object):
 
     # color_font("Hello World", 7, 32, 44)
     def __render_font(self, text, command):
-        # print(command)
-        # print(hex(command))
         display_type = command >> 8
         foreground_color = (command & 0xf0) >> 4
         background_color = (command & 0xf)
