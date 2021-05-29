@@ -28,14 +28,14 @@
 
 手动打包项目为exe文件
 ----
-```
+```shell
 #未安装pyinstaller先执行安装
 pip install pyinstaller
 
 #pyinstaller 打包项目为exe文件
 pyinstaller -F main.py -w
 #更多构建操作查看pyinstaller help说明
-```shell
+```
 
 
 使用说明
@@ -46,7 +46,8 @@ pyinstaller -F main.py -w
 
 保持更新
 ----
-​```shell script
+
+```shell
 git pull origin
 ```
 
