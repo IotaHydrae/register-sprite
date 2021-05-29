@@ -26,10 +26,22 @@
   
     > 作者提供了位于bin目录下构建好的exe文件
 
+手动打包项目为exe文件
+----
+```
+#未安装pyinstaller先执行安装
+pip install pyinstaller
+
+#pyinstaller 打包项目为exe文件
+pyinstaller -F main.py -w
+#更多构建操作查看pyinstaller help说明
+```shell
+
+
 使用说明
 ----
 ----
-###通过点击寄存器位按钮，更新底部各进制输入框中的数据，反之亦然。
+### 通过点击寄存器位按钮，更新底部各进制输入框中的数据，反之亦然。
 > 暂时仅支持修改16进制输入框中的数据更新寄存器位按钮
 
 保持更新
@@ -107,5 +119,6 @@ from tkinter import Tk, Label, Button, Toplevel
   > 
   > 你的每一份贡献都是对这个项目极大的帮助
   
+
 @[hz2](https://gitee.com/JensenHua/)
 我的个人邮箱（1657802074@qq.com）
