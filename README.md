@@ -46,7 +46,7 @@ pyinstaller -F main.py -w
 
 保持更新
 ----
-```shell script
+​```shell script
 git pull origin
 ```
 
